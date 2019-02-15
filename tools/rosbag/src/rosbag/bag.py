@@ -1110,8 +1110,12 @@ class Bag(object):
             raise ROSBagFormatException('error with bag')
 
     def _is_file(self, f):
+
         try:
-            return isinstance(f, file)  # Python 2
+            if isinstance(f, file):
+                return isinstance(f, file)  # Python 2
+            elif hasattr(f, "read"):  # Python 2
+                return hasattr(f, "read")
         except NameError:
             import io
             return isinstance(f, io.IOBase)  # Python 3...this will return false in Python 2 always
